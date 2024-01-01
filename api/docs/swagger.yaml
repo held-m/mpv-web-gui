@@ -1,0 +1,335 @@
+basePath: /v1/
+definitions:
+  dto.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      UserGroups:
+        items:
+          $ref: '#/definitions/entity.UserUserGroup'
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        maxLength: 32
+        minLength: 6
+        type: string
+      id:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      password:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - email
+    - name
+    type: object
+  entity.UserGroup:
+    properties:
+      Users:
+        items:
+          $ref: '#/definitions/entity.UserUserGroup'
+        type: array
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: string
+      name:
+        maxLength: 50
+        minLength: 4
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - name
+    type: object
+  entity.UserUserGroup:
+    properties:
+      User:
+        $ref: '#/definitions/entity.User'
+      UserGroup:
+        $ref: '#/definitions/entity.UserGroup'
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: string
+      updatedAt:
+        type: string
+      userGroupID:
+        type: string
+      userID:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  response.Error:
+    properties:
+      data: {}
+      msg:
+        type: string
+      status:
+        type: integer
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      msg:
+        type: string
+      status:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: API of "Where is my money"
+  title: Comics API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: auth of an user
+      parameters:
+      - description: Login
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Login an user
+      tags:
+      - Auth
+  /auth/signin:
+    post:
+      consumes:
+      - application/json
+      description: registration of an user
+      parameters:
+      - description: User
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/entity.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Registrate an user
+      tags:
+      - Auth
+  /private/user:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get all users
+      tags:
+      - App
+  /private/usergroup:
+    get:
+      consumes:
+      - application/json
+      description: Get all user's group
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get all user's group
+      tags:
+      - UserGroup
+    post:
+      consumes:
+      - application/json
+      description: Create user's group by ID
+      parameters:
+      - description: User Group
+        in: body
+        name: Group
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Create user's group by ID
+      tags:
+      - UserGroup
+  /private/usergroup/{ID}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove user's group by ID
+      parameters:
+      - description: ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Remove user's group by ID
+      tags:
+      - UserGroup
+    get:
+      consumes:
+      - application/json
+      description: Get user's group by ID
+      parameters:
+      - description: ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Get user's group by ID
+      tags:
+      - UserGroup
+    put:
+      consumes:
+      - application/json
+      description: Update user's group by ID
+      parameters:
+      - description: ID
+        in: path
+        name: ID
+        required: true
+        type: string
+      - description: User Group
+        in: body
+        name: Group
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.UserGroup'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Update user's group by ID
+      tags:
+      - UserGroup
+swagger: "2.0"

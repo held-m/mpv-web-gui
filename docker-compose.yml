@@ -1,0 +1,31 @@
+---
+version: '3.9'
+services:
+  media-web:
+    build:
+      context: .dev/nginx/.
+      dockerfile: Dockerfile
+    volumes:
+      - ./.dev/nginx/templates:/etc/nginx/templates
+    depends_on: [media-api]
+  media-api:
+    build:
+      context: .dev/api/.
+      dockerfile: Dockerfile
+    working_dir: /app
+    devices:
+      - "/dev/snd"
+    # command:
+    #   - 'sh -c "groupadd -g $(getent group audio | cut -d: -f3)"'
+    group_add:
+      - "996"
+    #   - $(getent group audio | cut -d: -f3)
+    volumes:
+      - ./api:/app
+  media-front:
+    build:
+      context: .dev/frontend/.
+      dockerfile: Dockerfile
+    volumes: [./frontend:/app]
+    working_dir: /app
+    user: node

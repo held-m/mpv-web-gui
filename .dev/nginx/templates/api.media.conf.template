@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    root /app;
+
+    server_name    api.media.dev www.api.media.dev;
+
+    location /tmp/ {
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_format html;
+        autoindex_localtime on;
+    }
+
+    location / {
+            proxy_pass http://media-api:3000;
+    }
+}
