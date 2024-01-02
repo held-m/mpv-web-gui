@@ -24,6 +24,8 @@ type Player struct {
 // Init initialize the media routes
 func (c Player) Init(playerGroup *gin.RouterGroup) {
 	playerGroup.GET("/play", c.Play)
+	playerGroup.GET("/pause", c.Pause)
+	playerGroup.GET("/unpause", c.Unpause)
 	playerGroup.GET("/stop", c.Stop)
 	playerGroup.GET("/playlist", c.GetPlayList)
 	playerGroup.GET("/next", c.Next)
@@ -50,6 +52,30 @@ func (c *Player) Play(ctx *gin.Context) {
 	}
 	c.Status = "playing"
 
+	ctx.JSON(200, gin.H{
+		"message": "pong",
+	})
+}
+
+// Pause pause the player
+func (c *Player) Pause(ctx *gin.Context) {
+	player := mpv.Player{
+		Status: "paused",
+	}
+	player.Pause()
+	c.Status = "paused"
+	ctx.JSON(200, gin.H{
+		"message": "pong",
+	})
+}
+
+// Unpause unpause the player
+func (c *Player) Unpause(ctx *gin.Context) {
+	player := mpv.Player{
+		Status: "playing",
+	}
+	player.Unpause()
+	c.Status = "playing"
 	ctx.JSON(200, gin.H{
 		"message": "pong",
 	})

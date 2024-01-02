@@ -36,6 +36,22 @@ func (p *Player) Play(source string) error {
 	return nil
 }
 
+// Pause the next song
+func (p *Player) Pause() error {
+	if _, err := p.Request("{\"command\": [\"set_property\", \"pause\", true]}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Unpause the next song
+func (p *Player) Unpause() error {
+	if _, err := p.Request("{\"command\": [\"set_property\", \"pause\", false]}"); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Stop the player
 func (p *Player) Stop() error {
 	if _, err := p.Request("stop"); err != nil {

@@ -6,6 +6,8 @@ import {
 
 interface API {
   Play: (src: string) => Promise<ClientResponse>;
+  Pause: () => Promise<ClientResponse>;
+  Unpause: () => Promise<ClientResponse>;
   Stop: () => Promise<ClientResponse>;
   Next: () => Promise<ClientResponse>;
   Prev: () => Promise<ClientResponse>;
@@ -14,6 +16,14 @@ interface API {
 
 const play = async (src: string) => {
   return await clientGet("player/play?src=" + src);
+};
+
+const pause = async () => {
+  return await clientGet("player/pause");
+};
+
+const unpause = async () => {
+  return await clientGet("player/unpause");
 };
 
 const stop = async () => {
@@ -34,6 +44,8 @@ const listSongs = async (data: (e: MessageEvent | null) => void) => {
 
 export const API: API = {
   Play: play,
+  Pause: pause,
+  Unpause: unpause,
   Stop: stop,
   Next: next,
   Prev: prev,
