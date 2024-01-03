@@ -37,6 +37,26 @@ export const PlayerMenu = () => {
     setIsPaused(false);
     setIsPlaying(false);
   };
+
+  // const [songs, setSongs] = useState<Song[]>([]);
+  //
+  const listMessageHandler = (data: MessageEvent | null) => {
+    if (data == null) {
+      // setSongs([]);
+      return;
+    }
+    const res = JSON.parse(data.data);
+    if (res != null) {
+      // setSongs(res.data);
+    } else {
+      // setSongs([]);
+    }
+  };
+
+  const listSongs = async () => {
+    Player.API.ListSongs(listMessageHandler);
+  };
+
   return (
     <div>
       <div className="grid grid-cols-4 gap-1 text-center">
@@ -48,17 +68,15 @@ export const PlayerMenu = () => {
         </div>
         <div
           onClick={playHandler}
-          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${
-            isPlaying ? "hidden" : ""
-          }`}
+          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${isPlaying ? "hidden" : ""
+            }`}
         >
           Play
         </div>
         <div
           onClick={pauseHandler}
-          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${
-            isPlaying ? "" : "hidden"
-          }`}
+          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${isPlaying ? "" : "hidden"
+            }`}
         >
           Pause
         </div>

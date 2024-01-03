@@ -11,7 +11,7 @@ interface API {
   Stop: () => Promise<ClientResponse>;
   Next: () => Promise<ClientResponse>;
   Prev: () => Promise<ClientResponse>;
-  ListSongs: (data: (e: MessageEvent | null) => void) => void;
+  ListSongs: () => WebSocket;
 }
 
 const play = async (src: string) => {
@@ -38,8 +38,9 @@ const prev = async () => {
   return await clientGet("player/prev");
 };
 
-const listSongs = async (data: (e: MessageEvent | null) => void) => {
-  clientWebsocket("player/playlist", data);
+const listSongs = (): WebSocket => {
+  // clientWebsocket("player/playlist", data);
+  return clientWebsocket("player/playlist");
 };
 
 export const API: API = {
