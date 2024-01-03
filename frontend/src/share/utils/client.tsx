@@ -157,20 +157,24 @@ export const clientGet = async (url: string): Promise<ClientResponse> => {
 
 let socket: WebSocket | null = null;
 
-export const clientWebsocket = (url: string): WebSocket => {
-  const s = new WebSocket(socketUrl() + url);
-  console.log(s);
-  return s;
+export const clientWebsocket = async (
+  url: string,
+  event: (e: MessageEvent | null) => void
+) => {
+  if (socket != null) {
+    return;
+  }
+  socket = new WebSocket(socketUrl() + url);
 
-  // socket.onmessage = function (messageEvent) {
-  //   event(messageEvent);
-  // };
-  // socket.onerror = function () {
-  //   event(null);
-  // };
-  // socket.onclose = function () {
-  //   event(null);
-  // };
+  socket.onmessage = function(messageEvent) {
+    event(messageEvent);
+  };
+  socket.onerror = function() {
+    event(null);
+  };
+  socket.onclose = function() {
+    event(null);
+  };
 };
 
 function getError(errorStatus: number) {
