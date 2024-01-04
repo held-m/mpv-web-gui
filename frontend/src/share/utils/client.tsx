@@ -166,15 +166,19 @@ export const clientWebsocket = async (
   }
   socket = new WebSocket(socketUrl() + url);
 
-  socket.onmessage = function (messageEvent) {
+  socket.onmessage = function(messageEvent) {
     event(messageEvent);
   };
-  socket.onerror = function () {
+  socket.onerror = function() {
     event(null);
   };
-  socket.onclose = function () {
+  socket.onclose = function() {
     event(null);
   };
+};
+
+export const ClientWebSocket = (url: string): WebSocket => {
+  return new WebSocket(socketUrl() + url);
 };
 
 function getError(errorStatus: number) {
@@ -214,7 +218,7 @@ export const clientFile = async (url: string, body: any, fileName: string) => {
       a.remove();
       window.URL.revokeObjectURL(a.href);
     })
-    .catch((err) => {});
+    .catch((err) => { });
 };
 
 function unauthorizedHandler(result: ClientResponse) {

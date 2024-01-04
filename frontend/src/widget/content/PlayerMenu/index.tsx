@@ -1,9 +1,11 @@
 "use client";
 
 import { Player } from "@media/player";
+import { useWebSocket } from "@src/lib/zustand/websocket";
 import { useState } from "react";
 
 export const PlayerMenu = () => {
+  const connect = useWebSocket((state) => state.connect);
   const [src, setSrc] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -20,6 +22,7 @@ export const PlayerMenu = () => {
     await Player.API.Play(src);
     setIsPaused(false);
     setIsPlaying(true);
+    connect();
   };
   const pauseHandler = async () => {
     await Player.API.Pause();
@@ -37,6 +40,26 @@ export const PlayerMenu = () => {
     setIsPaused(false);
     setIsPlaying(false);
   };
+
+  // const [songs, setSongs] = useState<Song[]>([]);
+  //
+  const listMessageHandler = (data: MessageEvent | null) => {
+    if (data == null) {
+      // setSongs([]);
+      return;
+    }
+    const res = JSON.parse(data.data);
+    if (res != null) {
+      // setSongs(res.data);
+    } else {
+      // setSongs([]);
+    }
+  };
+
+  const listSongs = async () => {
+    Player.API.ListSongs(listMessageHandler);
+  };
+
   return (
     <div>
       <div className="grid grid-cols-4 gap-1 text-center">
@@ -48,17 +71,15 @@ export const PlayerMenu = () => {
         </div>
         <div
           onClick={playHandler}
-          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${
-            isPlaying ? "hidden" : ""
-          }`}
+          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${isPlaying ? "hidden" : ""
+            }`}
         >
           Play
         </div>
         <div
           onClick={pauseHandler}
-          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${
-            isPlaying ? "" : "hidden"
-          }`}
+          className={`p-2 mx-2 border border-green-500 border-solid cursor-pointer ${isPlaying ? "" : "hidden"
+            }`}
         >
           Pause
         </div>
