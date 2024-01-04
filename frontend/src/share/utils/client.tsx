@@ -177,6 +177,10 @@ export const clientWebsocket = async (
   };
 };
 
+export const ClientWebSocket = (url: string): WebSocket => {
+  return new WebSocket(socketUrl() + url);
+};
+
 function getError(errorStatus: number) {
   switch (errorStatus) {
     case 400:

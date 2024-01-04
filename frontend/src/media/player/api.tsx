@@ -1,5 +1,6 @@
 import {
   ClientResponse,
+  ClientWebSocket,
   clientGet,
   clientWebsocket,
 } from "@share/utils/client";
@@ -40,7 +41,7 @@ const prev = async () => {
 
 const listSongs = (): WebSocket => {
   // clientWebsocket("player/playlist", data);
-  return clientWebsocket("player/playlist");
+  return ClientWebSocket("player/playlist");
 };
 
 export const API: API = {

@@ -1,9 +1,11 @@
 "use client";
 
 import { Player } from "@media/player";
+import { useWebSocket } from "@src/lib/zustand/websocket";
 import { useState } from "react";
 
 export const PlayerMenu = () => {
+  const connect = useWebSocket((state) => state.connect);
   const [src, setSrc] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -20,6 +22,7 @@ export const PlayerMenu = () => {
     await Player.API.Play(src);
     setIsPaused(false);
     setIsPlaying(true);
+    connect();
   };
   const pauseHandler = async () => {
     await Player.API.Pause();
