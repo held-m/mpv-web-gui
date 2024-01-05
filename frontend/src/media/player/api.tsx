@@ -40,8 +40,11 @@ const prev = async () => {
 };
 
 const listSongs = (): WebSocket => {
-  // clientWebsocket("player/playlist", data);
   return ClientWebSocket("player/playlist");
+};
+
+const volume = async (volume: number) => {
+  return await clientGet("player/volume?volume=" + volume);
 };
 
 export const API: API = {

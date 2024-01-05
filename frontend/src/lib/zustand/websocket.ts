@@ -5,15 +5,15 @@ import { create } from "zustand";
 interface WebSocketStore {
   socket: WebSocket | null;
   status: "connecting" | "online" | "disconnected";
-  connect: () => void;
+  play: () => void;
   listSongs: Song[];
 }
 
 export const useWebSocket = create<WebSocketStore>((set) => ({
-  status: "connecting",
+  status: "disconnected",
   listSongs: [],
   socket: null,
-  connect: () => {
+  play: () => {
     const socket = API.ListSongs();
     socket.onopen = () => set({ socket, status: "online" });
     socket.onclose = () => set({ socket: null, status: "disconnected" });
