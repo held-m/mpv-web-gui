@@ -13,6 +13,7 @@ interface API {
   Next: () => Promise<ClientResponse>;
   Prev: () => Promise<ClientResponse>;
   ListSongs: () => WebSocket;
+  SetVolume: (volume: string) => Promise<ClientResponse>;
 }
 
 const play = async (src: string) => {
@@ -43,8 +44,8 @@ const listSongs = (): WebSocket => {
   return ClientWebSocket("player/playlist");
 };
 
-const volume = async (volume: number) => {
-  return await clientGet("player/volume?volume=" + volume);
+const setVolume = async (volume: string) => {
+  return await clientGet("player/volume/" + volume);
 };
 
 export const API: API = {
@@ -55,4 +56,5 @@ export const API: API = {
   Next: next,
   Prev: prev,
   ListSongs: listSongs,
+  SetVolume: setVolume,
 };

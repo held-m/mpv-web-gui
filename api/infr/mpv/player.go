@@ -6,7 +6,7 @@ import "os/exec"
 type Player struct {
 	Name     string
 	PlayList []PlayList
-	Volume   int
+	Volume   int8
 	Client
 	Status string
 }
@@ -71,6 +71,14 @@ func (p *Player) Next() error {
 // Previous play the previous song
 func (p *Player) Previous() error {
 	if _, err := p.Request("playlist_prev"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// SetVolume set a volume
+func (p *Player) SetVolume(volume string) error {
+	if _, err := p.Request("set volume " + volume); err != nil {
 		return err
 	}
 	return nil

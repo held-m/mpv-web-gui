@@ -2,17 +2,13 @@
 
 import { Player } from "@media/player";
 import { PlayPause } from "@src/media/PlayPause";
+import { Volume } from "@src/media/Volume";
 import { useState } from "react";
 
 export const PlayerMenu = () => {
   const [src, setSrc] = useState("");
   const [stopped, setStopped] = useState(false);
-  const nextHandler = () => {
-    Player.API.Next();
-  };
-  const backHandler = () => {
-    Player.API.Prev();
-  };
+
   const stopHandler = () => {
     Player.API.Stop();
     setStopped(true);
@@ -22,14 +18,18 @@ export const PlayerMenu = () => {
     <div>
       <div className="grid grid-cols-4 gap-1 text-center">
         <div
-          onClick={backHandler}
+          onClick={() => {
+            Player.API.Prev();
+          }}
           className="p-2 mx-2 border border-green-500 border-solid cursor-pointer"
         >
           Back
         </div>
         <PlayPause src={src} isStopped={stopped} setIsStopped={setStopped} />
         <div
-          onClick={nextHandler}
+          onClick={() => {
+            Player.API.Next();
+          }}
           className="p-2 mx-2 border border-green-500 border-solid cursor-pointer"
         >
           Next
@@ -41,6 +41,7 @@ export const PlayerMenu = () => {
           Stop
         </div>
       </div>
+      <Volume />
       <div>
         <input
           type="text"

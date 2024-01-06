@@ -30,22 +30,15 @@ func (c Player) Init(playerGroup *gin.RouterGroup) {
 	playerGroup.GET("/playlist", c.GetPlayList)
 	playerGroup.GET("/next", c.Next)
 	playerGroup.GET("/prev", c.Previous)
-	// playerGroup.GET("/volumeup", c.VolumeUp)
-	// playerGroup.GET("/volumedown", c.VolumeDown)
+	playerGroup.GET("/volume/:volume", c.Volume)
 }
 
 // Play play a song
 func (c *Player) Play(ctx *gin.Context) {
 
-	// source := "https://www.youtube.com/watch?v=gy-x3uwf0sw"
-	// source := "https://www.youtube.com/watch?v=1iYNBEr3IdU"
-
 	player := mpv.Player{}
 
-	// source := "https://www.youtube.com/watch?v=UXhHNGpXMK8"
-
 	src := ctx.Query("src")
-	println("src: ", src)
 
 	if err := player.Play(src); err != nil {
 		println("error play: ", err.Error())
@@ -156,4 +149,17 @@ func (c *Player) GetPlayList(ctx *gin.Context) {
 			println("get playlist")
 		}
 	}
+}
+
+// Volume set the volume
+func (c *Player) Volume(ctx *gin.Context) {
+	player := mpv.Player{}
+
+	volume := ctx.Param("volume")
+
+	player.SetVolume(volume)
+
+	ctx.JSON(200, gin.H{
+		"message": "pong",
+	})
 }

@@ -8,8 +8,7 @@ type Player interface {
 	Pause()
 	Next()
 	Previous()
-	VolumeUp()
-	VolumeDown()
+	Volume(volume int8)
 }
 
 // type Player struct {
