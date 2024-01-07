@@ -15,6 +15,10 @@ type Command struct {
 	Command []string `json:"command"`
 }
 
+// TODO:
+// create Player struct or use what is already there
+// retrurn Player struct with all the info
+
 // GetSongs get the songs from the playlist
 func (pl *PlayList) GetSongs() (string, error) {
 

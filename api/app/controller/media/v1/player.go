@@ -41,12 +41,15 @@ func (c *Player) Play(ctx *gin.Context) {
 	src := ctx.Query("src")
 
 	if err := player.Play(src); err != nil {
-		println("error play: ", err.Error())
+		ctx.JSON(500, gin.H{
+			"message": err.Error(),
+		})
 	}
 	c.Status = "playing"
 
 	ctx.JSON(200, gin.H{
-		"message": "pong",
+		"message": "start to play",
+		"status":  http.StatusOK,
 	})
 }
 
@@ -135,18 +138,15 @@ func (c *Player) GetPlayList(ctx *gin.Context) {
 			println("stop send")
 			return
 		default:
-			println("status: ", c.Status)
-			time.Sleep(1 * time.Second)
+			time.Sleep(2 * time.Second)
 			playlist := mpv.PlayList{}
 			out, err := playlist.GetSongs()
 			if err != nil {
-				println("warning get playlist: ", err.Error())
-				continue
+				break
 			}
 			var outJSON interface{}
 			json.Unmarshal([]byte(out), &outJSON)
 			conn.WriteJSON(outJSON)
-			println("get playlist")
 		}
 	}
 }

@@ -1,11 +1,11 @@
 "use client";
-import { useWebSocket } from "@src/lib/zustand/websocket";
+import { usePlayerState } from "@src/lib/zustand/player";
 import { useEffect } from "react";
 
 export const ListSongs = () => {
-  const songs = useWebSocket((state) => state.listSongs);
-  const status = useWebSocket((state) => state.status);
-  const play = useWebSocket((state) => state.play);
+  const songs = usePlayerState((state) => state.playlist);
+  const clientStatus = usePlayerState((state) => state.clientStatus);
+  const play = usePlayerState((state) => state.play);
 
   useEffect(() => {
     play();
@@ -13,7 +13,7 @@ export const ListSongs = () => {
 
   return (
     <div className="flex flex-col">
-      <div>Status: {status}</div>
+      <div>Status: {clientStatus}</div>
 
       {songs && (
         <div className="flex flex-col">
