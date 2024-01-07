@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import { Player } from "../player";
+import { API } from "../../api";
 
-export const Volume = () => {
+export const VolumeRange = () => {
   const [volume, setVolume] = useState("100");
 
   const handleVolumeChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setVolume(e.target.value);
-    Player.API.SetVolume(e.target.value);
+    API.SetVolume(e.target.value);
   };
 
   return (

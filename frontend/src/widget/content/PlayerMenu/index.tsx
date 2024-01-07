@@ -1,8 +1,7 @@
 "use client";
 
-import { Player } from "@media/player";
-import { PlayPause } from "@src/media/PlayPause";
-import { Volume } from "@src/media/Volume";
+import { PlayerModul } from "@media/player";
+
 import { useState } from "react";
 
 export const PlayerMenu = () => {
@@ -10,7 +9,7 @@ export const PlayerMenu = () => {
   const [stopped, setStopped] = useState(false);
 
   const stopHandler = () => {
-    Player.API.Stop();
+    PlayerModul.API.Stop();
     setStopped(true);
   };
 
@@ -19,16 +18,20 @@ export const PlayerMenu = () => {
       <div className="grid grid-cols-4 gap-1 text-center">
         <div
           onClick={() => {
-            Player.API.Prev();
+            PlayerModul.API.Prev();
           }}
           className="p-2 mx-2 border border-green-500 border-solid cursor-pointer"
         >
           Back
         </div>
-        <PlayPause src={src} isStopped={stopped} setIsStopped={setStopped} />
+        <PlayerModul.UI.PlayPauseButton
+          src={src}
+          isStopped={stopped}
+          setIsStopped={setStopped}
+        />
         <div
           onClick={() => {
-            Player.API.Next();
+            PlayerModul.API.Next();
           }}
           className="p-2 mx-2 border border-green-500 border-solid cursor-pointer"
         >
@@ -41,7 +44,7 @@ export const PlayerMenu = () => {
           Stop
         </div>
       </div>
-      <Volume />
+      <PlayerModul.UI.VolumeRange />
       <div>
         <input
           type="text"

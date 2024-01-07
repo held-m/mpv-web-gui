@@ -1,6 +1,6 @@
 import { useWebSocket } from "@src/lib/zustand/websocket";
-import { Player } from "../player";
 import { useEffect, useState } from "react";
+import { API } from "../../api";
 
 type Props = {
   src: string;
@@ -8,7 +8,7 @@ type Props = {
   setIsStopped: (isStopped: boolean) => void;
 };
 
-export const PlayPause = (props: Props) => {
+export const PlayPauseButton = (props: Props) => {
   const connect = useWebSocket((state) => state.play);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,21 +21,21 @@ export const PlayPause = (props: Props) => {
 
   const playHandler = async () => {
     if (!isPlaying && !props.isStopped) {
-      await Player.API.Unpause();
+      await API.Unpause();
       setIsPlaying(true);
       return;
     }
     if (props.src == "") {
       return;
     }
-    await Player.API.Play(props.src);
+    await API.Play(props.src);
     setIsPlaying(true);
     props.setIsStopped(false);
     connect();
   };
 
   const pauseHandler = async () => {
-    await Player.API.Pause();
+    await API.Pause();
     setIsPlaying(false);
   };
   return (
