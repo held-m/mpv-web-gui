@@ -2,7 +2,6 @@
 package mediaconttroller
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
 
@@ -139,14 +138,19 @@ func (c *Player) GetPlayList(ctx *gin.Context) {
 			return
 		default:
 			time.Sleep(2 * time.Second)
-			playlist := mpv.PlayList{}
-			out, err := playlist.GetSongs()
+			player, err := mpv.InitPlayer()
+			if err != nil {
+				println("error init player: ", err.Error())
+				break
+			}
+			// out, err := player.GetPlayer()
+			// out, err := playlist.GetSongs()
 			if err != nil {
 				break
 			}
-			var outJSON interface{}
-			json.Unmarshal([]byte(out), &outJSON)
-			conn.WriteJSON(outJSON)
+			// var outJSON interface{}
+			// json.Unmarshal([]byte(player), &outJSON)
+			conn.WriteJSON(player)
 		}
 	}
 }

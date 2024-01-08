@@ -53,6 +53,7 @@ export const PlayerMenu = () => {
           onChange={(e) => {
             setSrc(e.target.value);
           }}
+          value="https://music.youtube.com/playlist?list=OLAK5uy_kcW9BewDi65mQJqrU1FMtuJDOWvLj2jLA&si=HASWsP9ECi8-brtK"
         />
       </div>
     </div>

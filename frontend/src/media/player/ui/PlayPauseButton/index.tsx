@@ -22,19 +22,19 @@ export const PlayPauseButton = (props: Props) => {
 
   const playHandler = async () => {
     // if (!isPlaying && !props.isStopped) {
-    if (playerStatus === "paused") {
-      console.log("Unpause");
-      const resp = await API.Unpause();
-      if (resp.status !== 200) {
-        console.log("Error", resp);
-        return;
-      }
-      setIsPlaying(true);
-      return;
-    }
-    if (props.src == "") {
-      return;
-    }
+    // if (playerStatus === "paused") {
+    //   console.log("Unpause");
+    //   const resp = await API.Unpause();
+    //   if (resp.status !== 200) {
+    //     console.log("Error", resp);
+    //     return;
+    //   }
+    //   setIsPlaying(true);
+    //   return;
+    // }
+    // if (props.src == "") {
+    //   return;
+    // }
     const resp = await API.Play(props.src);
     console.log("Play", resp.status);
     if (resp.status !== 200) {

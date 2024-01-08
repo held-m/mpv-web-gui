@@ -4,11 +4,45 @@ import "os/exec"
 
 // Player is the player of mpv
 type Player struct {
-	Name     string
-	PlayList []PlayList
-	Volume   int8
 	Client
+	Name   string
+	Volume string
 	Status string
+}
+
+// InitPlayer create a new player
+func InitPlayer() (Player, error) {
+	p := Player{}
+
+	// Get Name of the player
+	if err := p.getName(); err != nil {
+		return p, err
+	}
+
+	// Get Volume of the player
+	if err := p.getVolume(); err != nil {
+		return p, err
+	}
+
+	return p, nil
+}
+
+func (p *Player) getName() error {
+	name, err := p.Request("\"get_property\", \"name\"")
+	if err != nil {
+		return err
+	}
+	p.Name = name
+	return nil
+}
+
+func (p *Player) getVolume() error {
+	volume, err := p.Request("\"get_property\", \"volume\"")
+	if err != nil {
+		return err
+	}
+	p.Volume = volume
+	return nil
 }
 
 // func (p *Player) AddPlayList(pl PlayList) {
