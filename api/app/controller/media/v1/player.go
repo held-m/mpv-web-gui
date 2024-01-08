@@ -150,6 +150,7 @@ func (c *Player) GetPlayList(ctx *gin.Context) {
 			}
 			// var outJSON interface{}
 			// json.Unmarshal([]byte(player), &outJSON)
+			println("out: ", player.Volume)
 			conn.WriteJSON(player)
 		}
 	}

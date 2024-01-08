@@ -1,13 +1,16 @@
 package mpv
 
-import "os/exec"
+import (
+	"os/exec"
+)
 
 // Player is the player of mpv
 type Player struct {
 	Client
-	Name   string
-	Volume string
-	Status string
+	Name     string
+	Volume   string
+	Status   string
+	PlayList []PlayList
 }
 
 // InitPlayer create a new player
@@ -28,7 +31,7 @@ func InitPlayer() (Player, error) {
 }
 
 func (p *Player) getName() error {
-	name, err := p.Request("\"get_property\", \"name\"")
+	name, err := p.RequestGetProperty("name")
 	if err != nil {
 		return err
 	}
@@ -37,7 +40,7 @@ func (p *Player) getName() error {
 }
 
 func (p *Player) getVolume() error {
-	volume, err := p.Request("\"get_property\", \"volume\"")
+	volume, err := p.RequestGetProperty("volume")
 	if err != nil {
 		return err
 	}

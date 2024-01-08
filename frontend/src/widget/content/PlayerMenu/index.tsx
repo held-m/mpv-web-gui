@@ -5,7 +5,9 @@ import { PlayerModul } from "@media/player";
 import { useState } from "react";
 
 export const PlayerMenu = () => {
-  const [src, setSrc] = useState("");
+  const [src, setSrc] = useState(
+    "https://music.youtube.com/playlist?list=OLAK5uy_kcW9BewDi65mQJqrU1FMtuJDOWvLj2jLA&si=K23NmIMqlYSfIwPr"
+  );
   const [stopped, setStopped] = useState(false);
 
   const stopHandler = () => {
@@ -53,7 +55,9 @@ export const PlayerMenu = () => {
           onChange={(e) => {
             setSrc(e.target.value);
           }}
-          value="https://music.youtube.com/playlist?list=OLAK5uy_kcW9BewDi65mQJqrU1FMtuJDOWvLj2jLA&si=HASWsP9ECi8-brtK"
+          value={src}
+        // defaultValue="https://music.youtube.com/playlist?list=OLAK5uy_kcW9BewDi65mQJqrU1FMtuJDOWvLj2jLA&si=K23NmIMqlYSfIwPr"
+        // value="https://music.youtube.com/playlist?list=OLAK5uy_kcW9BewDi65mQJqrU1FMtuJDOWvLj2jLA&si=HASWsP9ECi8-brtK"
         />
       </div>
     </div>

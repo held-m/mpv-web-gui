@@ -19,6 +19,7 @@ export const usePlayerState = create<PlayerStore>((set) => ({
     socket.onclose = () => set({ clientStatus: "disconnected" });
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      console.log(data);
       set({
         clientStatus: "online",
         playlist: data.data,
