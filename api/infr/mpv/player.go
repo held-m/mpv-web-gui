@@ -6,60 +6,19 @@ import (
 
 // Player is the player of mpv
 type Player struct {
-	Client
-	Name     string
-	Volume   string
-	Status   string
-	PlayList []PlayList
+	Props  PlayerProps
+	Status string
 }
 
 // InitPlayer create a new player
 func InitPlayer() (Player, error) {
 	p := Player{}
 
-	// Get Name of the player
-	if err := p.getName(); err != nil {
-		return p, err
-	}
+	p.Props = InitPlayerProps()
 
-	// Get Volume of the player
-	if err := p.getVolume(); err != nil {
-		return p, err
-	}
-
+	//
 	return p, nil
 }
-
-func (p *Player) getName() error {
-	name, err := p.RequestGetProperty("name")
-	if err != nil {
-		return err
-	}
-	p.Name = name
-	return nil
-}
-
-func (p *Player) getVolume() error {
-	volume, err := p.RequestGetProperty("volume")
-	if err != nil {
-		return err
-	}
-	p.Volume = volume
-	return nil
-}
-
-// func (p *Player) AddPlayList(pl PlayList) {
-// 	p.PlayList = append(p.PlayList, pl)
-// }
-//
-
-// func (p *Player) RemovePlayList(pl PlayList) {
-// 	for i, v := range p.PlayList {
-// 		if v.Name == pl.Name {
-// 			p.PlayList = append(p.PlayList[:i], p.PlayList[i+1:]...)
-// 		}
-// 	}
-// }
 
 // Play the source
 func (p *Player) Play(source string) error {
@@ -75,15 +34,19 @@ func (p *Player) Play(source string) error {
 
 // Pause the next song
 func (p *Player) Pause() error {
-	if _, err := p.Request("{\"command\": [\"set_property\", \"pause\", true]}"); err != nil {
+	if _, err := new(Client).Request("{\"command\": [\"set_property\", \"pause\", true]}"); err != nil {
 		return err
 	}
 	return nil
+	// if _, err := new(Client).RequestSetProperty("pause", "true"); err != nil {
+	// 	return err
+	// }
+	// return nil
 }
 
 // Unpause the next song
 func (p *Player) Unpause() error {
-	if _, err := p.Request("{\"command\": [\"set_property\", \"pause\", false]}"); err != nil {
+	if _, err := new(Client).Request("{\"command\": [\"set_property\", \"pause\", false]}"); err != nil {
 		return err
 	}
 	return nil
@@ -91,7 +54,7 @@ func (p *Player) Unpause() error {
 
 // Stop the player
 func (p *Player) Stop() error {
-	if _, err := p.Request("stop"); err != nil {
+	if _, err := new(Client).Request("stop"); err != nil {
 		return err
 	}
 	return nil
@@ -99,7 +62,7 @@ func (p *Player) Stop() error {
 
 // Next play the next song
 func (p *Player) Next() error {
-	if _, err := p.Request("playlist_next"); err != nil {
+	if _, err := new(Client).Request("playlist_next"); err != nil {
 		return err
 	}
 	return nil
@@ -107,7 +70,7 @@ func (p *Player) Next() error {
 
 // Previous play the previous song
 func (p *Player) Previous() error {
-	if _, err := p.Request("playlist_prev"); err != nil {
+	if _, err := new(Client).Request("playlist_prev"); err != nil {
 		return err
 	}
 	return nil
@@ -115,7 +78,7 @@ func (p *Player) Previous() error {
 
 // SetVolume set a volume
 func (p *Player) SetVolume(volume string) error {
-	if _, err := p.Request("set volume " + volume); err != nil {
+	if _, err := new(Client).Request("set volume " + volume); err != nil {
 		return err
 	}
 	return nil

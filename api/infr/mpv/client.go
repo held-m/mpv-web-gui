@@ -2,7 +2,6 @@
 package mpv
 
 import (
-	"fmt"
 	"os/exec"
 )
 
@@ -20,9 +19,6 @@ func (c *Client) Request(command string) (string, error) {
 	cmd.Start()
 	out, err := socat.Output()
 	if err != nil {
-		fmt.Println("error socat: ", err)
-		println("error socat: ", err.Error())
-		println("out socat: ", string(out))
 		return "", err
 	}
 	return string(out), nil
@@ -35,18 +31,15 @@ func (c *Client) RequestGetProperty(property string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// socat := exec.Command("socat", "-", "/tmp/mpvsocket")
-	// pipe, _ := cmd.StdoutPipe()
-	// defer pipe.Close()
-	//
-	// socat.Stdin = pipe
-	// cmd.Start()
-	// out, err := socat.Output()
-	// if err != nil {
-	// 	fmt.Println("error socat: ", err)
-	// 	println("error socat: ", err.Error())
-	// 	println("out socat: ", string(out))
-	// 	return "", err
-	// }
+	return string(out), nil
+}
+
+// RequestSetProperty send a command to mpv
+func (c *Client) RequestSetProperty(property string, value string) (string, error) {
+	cmd := "{\"command\": [\"set_property\", \"" + property + "\", \"" + value + "\"] }"
+	out, err := c.Request(cmd)
+	if err != nil {
+		return "", err
+	}
 	return string(out), nil
 }

@@ -1,36 +1,16 @@
 package mpv
 
-import "encoding/json"
-
 // PlayList is the playlist
 type PlayList struct {
-	Name   string
-	Songs  []Song
-	Source string
 	Client
+	Songs string
 }
 
-// Command is the command to send to mpv
-type Command struct {
-	Command []string `json:"command"`
-}
-
-// TODO:
-// create Player struct or use what is already there
-// retrurn Player struct with all the info
-
-// GetSongs get the songs from the playlist
-func (pl *PlayList) GetSongs() (string, error) {
-
-	cmd := &Command{
-		Command: []string{"get_property", "playlist"},
-	}
-
-	cmdString, err := json.Marshal(cmd)
-
+func (p *PlayList) getPlaylist() error {
+	playlist, err := p.RequestGetProperty("playlist")
 	if err != nil {
-		return "", err
+		return err
 	}
-
-	return pl.Request(string(cmdString))
+	p.Songs = playlist
+	return nil
 }
